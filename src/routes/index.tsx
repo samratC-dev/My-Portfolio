@@ -54,7 +54,7 @@ const PROFILE = {
   role: "Web Developer",
   location: "Bengaluru, India",
   email: "samratchakraborty537@gmail.com",
-  resumeUrl: "/Samrat Chakraborty~Resume.pdf",
+  resumeUrl: "/resume.pdf",
   morphingWords: ["Developer", "Designer", "Builder", "Creator", "Engineer"],
   bio: `I build fast, accessible, and beautiful web apps. Currently focused on
 React, TypeScript and Node.js. I love turning hard problems into
