@@ -54,7 +54,7 @@ const PROFILE = {
   role: "Web Developer",
   location: "Bengaluru, India",
   email: "samratchakraborty537@gmail.com",
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "/Samrat Chakraborty~Resume.pdf",
   morphingWords: ["Developer", "Designer", "Builder", "Creator", "Engineer"],
   bio: `I build fast, accessible, and beautiful web apps. Currently focused on
 React, TypeScript and Node.js. I love turning hard problems into
@@ -291,12 +291,16 @@ function Skills() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
             >
-              <Card className="group h-full border-white/10 bg-white/5 p-6 transition hover:border-white/30 hover:bg-white/10">
-                <s.icon className="h-7 w-7 text-white/80 transition group-hover:scale-110" />
-                <h3 className="mt-4 text-xl font-semibold">{s.name}</h3>
+              {/* ✅ FIX: bumped border, bg and text to full white for visibility */}
+              <Card className="group h-full border-white/20 bg-white/5 p-6 transition hover:border-white/40 hover:bg-white/10">
+                <s.icon className="h-7 w-7 text-white transition group-hover:scale-110" />
+                <h3 className="mt-4 text-xl font-semibold text-white">{s.name}</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {s.items.map((it) => (
-                    <span key={it} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+                    <span
+                      key={it}
+                      className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-medium text-white"
+                    >
                       {it}
                     </span>
                   ))}
@@ -336,18 +340,25 @@ function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [error, setError] = useState("");
 
+  // ✅ FIX: replaced broken /api/contact with Web3Forms
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
     setError("");
     try {
-      const res = await fetch("/api/contact", {
+      const formData = new FormData();
+      formData.append("access_key", "2fbbd3e4-8b46-4e53-af92-0ee5be10e43d");
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("message", form.message);
+      formData.append("subject", `New message from ${form.name} — Portfolio`);
+
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: formData,
       });
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "Failed to send");
+      if (!data.success) throw new Error(data.message || "Failed to send");
       setStatus("ok");
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
